@@ -1,0 +1,22 @@
+name: LambdaDeployer
+description: Deploy Lambda Code
+author: https://github.com/envato
+requirements: []
+configuration:
+  properties:
+    function_name:
+      type: string
+    zip_file:
+      type: string
+    path:
+      type: string
+    s3_bucket:
+      type: string
+    s3_key:
+      type: string
+  oneOf:
+    required:
+      - function_name
+    required:
+      - zip
+  additionalProperties: false
