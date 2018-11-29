@@ -39,14 +39,14 @@ teardown() {
   stub base64 \
     ": echo 'TWpJeU1qSXlNakl5TWpJSwo='"
   stub aws \
-    "s3 cp --acl private --region ap-southeast-2 /plugin//fake/path/myfunc-2323.zip s3://myfuncbucket/deploy_code/production/myfunc-2323.zip : echo 'upload: test.txt to s3://myfuncbucket/deploy_code/production/myfunc-2323.zip'"
-  stub aws \
-    "lambda update-function-code --function-name myfunc --region ap-southeast-2 --s3-bucket myfuncbucket --s3-key deploy_code/production/myfunc-2323.zip : echo"
+    "s3 cp --acl private --region ap-southeast-2 /plugin/fake/path/myfunc-2323.zip s3://myfuncbucket/deploy_code/production/myfunc-2323.zip : echo 'upload: test.txt to s3://myfuncbucket/deploy_code/production/myfunc-2323.zip'" \
+    "lambda update-function-code --function-name myfunc --region ap-southeast-2 --s3-bucket myfuncbucket --s3-key deploy_code/production/myfunc-2323.zip : cat tests/lambda_output.json"
   stub jq \
     "'.CodeSha256' : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
 
   run "$PWD/hooks/command"
   assert_success
+  assert_output --partial "upload: test.txt to s3://myfuncbucket/deploy_code/production/myfunc-2323.zip"
   assert_output --partial "Successfully uploaded new function code with SHA TWpJeU1qSXlNakl5TWpJSwo="
 
   unstub zip
@@ -65,7 +65,7 @@ teardown() {
   stub base64 \
     ": echo 'TWpJeU1qSXlNakl5TWpJSwo='"  
   stub aws \
-    "lambda update-function-code --function-name myfunc --region ap-southeast-2 --zip-file fileb://${PWD}/${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_PATH}/${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_ZIP_FILE} : echo"
+    "lambda update-function-code --function-name myfunc --region ap-southeast-2 --zip-file fileb:///plugin/fake/path/myfunc-2323.zip : cat tests/lambda_output.json"
   stub jq \
     "'.CodeSha256' : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
 
@@ -90,13 +90,14 @@ teardown() {
   stub base64 \
     ": echo 'TWpJeU1qSXlNakl5TWpJSwo='"  
   stub aws \
-    "lambda update-function-code --function-name myfunc --region ap-southeast-2 --zip-file fileb://${PWD}/${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_ZIP_FILE} : echo"
+    "lambda update-function-code --function-name myfunc --region ap-southeast-2 --zip-file fileb:///plugin/myfunc-2323.zip : cat tests/lambda_output.json"
   stub jq \
     "'.CodeSha256' : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
 
   touch myfunc-2323.zip
   run "$PWD/hooks/command"
   assert_success
+  assert_output --partial "S3 bucket or key not provided, copying up zip file direct to lambda"
   assert_output --partial "Successfully uploaded new function code with SHA TWpJeU1qSXlNakl5TWpJSwo="
 
   unstub aws
@@ -113,14 +114,14 @@ teardown() {
   stub base64 \
     ": echo 'TWpJeU1qSXlNakl5TWpJSwo='"
   stub aws \
-    "s3 cp --acl private --region ap-southeast-2 /plugin//fake/path/myfunc-2323.zip s3://myfuncbucket/deploy_code/production/myfunc-2323.zip : echo 'upload: test.txt to s3://myfuncbucket/deploy_code/production/myfunc-2323.zip'"
-  stub aws \
-    "lambda update-function-code --function-name myfunc --region ap-southeast-2 --s3-bucket myfuncbucket --s3-key deploy_code/production/myfunc-2323.zip : echo"
+    "s3 cp --acl private --region ap-southeast-2 /plugin/fake/path/myfunc-2323.zip s3://myfuncbucket/deploy_code/production/myfunc-2323.zip : echo 'upload: test.txt to s3://myfuncbucket/deploy_code/production/myfunc-2323.zip'" \
+    "lambda update-function-code --function-name myfunc --region ap-southeast-2 --s3-bucket myfuncbucket --s3-key deploy_code/production/myfunc-2323.zip : cat tests/lambda_output.json"
   stub jq \
     "'.CodeSha256' : echo 'NOTAGOODSHA'"
 
   run "$PWD/hooks/command"
   assert_failure
+  assert_output --partial "upload: test.txt to s3://myfuncbucket/deploy_code/production/myfunc-2323.zip"
   assert_output --partial "zip file (TWpJeU1qSXlNakl5TWpJSwo=) does not match the returned checksum from AWS (NOTAGOODSHA)"
 
   unstub zip

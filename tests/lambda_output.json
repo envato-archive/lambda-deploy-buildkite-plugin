@@ -1,0 +1,28 @@
+{
+    "FunctionName": "myfunc",
+    "FunctionArn": "arn:aws:lambda:ap-southeast-2:1234567890:function:myfunc",
+    "Runtime": "python3.6",
+    "Role": "arn:aws:iam::1234567890:role/LambdaExecutionRole-123456789",
+    "Handler": "lambda_handler",
+    "CodeSize": 5483014,
+    "Description": "Lambda",
+    "Timeout": 15,
+    "MemorySize": 128,
+    "LastModified": "2018-11-29T01:17:15.803+0000",
+    "CodeSha256": "TWpJeU1qSXlNakl5TWpJSwo=",
+    "Version": "$LATEST",
+    "VpcConfig": {
+        "SubnetIds": [],
+        "SecurityGroupIds": [],
+        "VpcId": ""
+    },
+    "Environment": {
+        "Variables": {
+            "environment": "production"
+        }
+    },
+    "TracingConfig": {
+        "Mode": "Active"
+    },
+    "RevisionId": "e8a86dc4-194e-4c07-a191-d2b3127d7c88"
+}
