@@ -8,6 +8,7 @@ aws_s3_copy_command=("aws" "s3" "cp" "--acl" "private")
 BUILDKITE_PLUGIN_LAMBDA_DEPLOY_FUNCTION_NAME=${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_FUNCTION_NAME:-''}
 BUILDKITE_PLUGIN_LAMBDA_DEPLOY_ZIP_FILE=${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_ZIP_FILE:-''}
 BUILDKITE_PLUGIN_LAMBDA_DEPLOY_PATH=${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_PATH:-''}
+COPY_TO_S3=false
 
 if [[ "${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_DEBUG:-false}" =~ (true|on|1) ]] ; then
   echo "--- :hammer: Enabling debug mode"
@@ -35,7 +36,7 @@ else
 fi
 
 DEPLOY_ZIP_FILE="${ZIP_PATH}${ZIP_FILE}"
-echo "depf $DEPLOY_ZIP_FILE"
+
 if [[ -n "${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_REGION:-us-east-1}" ]] ; then
   deploy_command+=("--region" "${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_REGION}")
   aws_s3_copy_command+=("--region" "${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_REGION}")
@@ -49,7 +50,6 @@ if [[ -n "${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_S3_BUCKET:-}" ]] && [[ -n "${BUILDKIT
 else
   echo "S3 bucket or key not provided, copying up zip file direct to lambda"
   deploy_command+=("--zip-file" "fileb://${DEPLOY_ZIP_FILE}")
-  COPY_TO_S3=false
 fi
 
 aws_s3_copy() {
@@ -81,7 +81,7 @@ code_sha256() {
 
 LOCAL_CHECKSUM=$(code_sha256)
 
-[[ $COPY_TO_S3 ]] && aws_s3_copy
+[[ $COPY_TO_S3 == true ]] && aws_s3_copy
 
 RETURNED_CHECKSUM=$(aws_lambda_code_update)
 
