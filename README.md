@@ -8,7 +8,7 @@ A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying 
 steps:
   - name: deploy
     plugins:
-      -  envato/lambda-deploy#v1.0.0:
+      -  envato/lambda-deploy#v1.0.1:
           function_name: myfunction
           zip_file: deploy-version.zip
           path: path/to/deploy/code
