@@ -1,6 +1,11 @@
-version: '2'
+version: "3"
 services:
   tests:
-    build: .
+    image: "buildkite/plugin-tester"
     volumes:
       - ".:/plugin:rw"
+  lint:
+    image: "buildkite/plugin-linter"
+    command: ["--id", "envato/lambda-deploy"]
+    volumes:
+      - ".:/plugin:ro"
