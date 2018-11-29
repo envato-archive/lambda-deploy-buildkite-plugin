@@ -6,13 +6,15 @@ A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying 
 
 ```yml
 steps:
-  - plugins:
-      envato/lambda-deploy#v1.0.0:
-        function_name: myfunction
-        zip_file: deploy-version.zip
-        path: path/to/deploy/code
-        s3_bucket: deploybucket
-        s3_key: deploy/key/name
+  - name: deploy
+    plugins:
+      -  envato/lambda-deploy#v1.0.0:
+          function_name: myfunction
+          zip_file: deploy-version.zip
+          path: path/to/deploy/code
+          s3_bucket: deploybucket
+          s3_key: deploy/key/name
+          region: ap-southeast-2
 ```
 
 ## Configuration
@@ -39,6 +41,10 @@ The S3 bucket. The S3 bucket must already be created and have the correct permis
 ### `s3_key`
 
 The path to store the S3 key
+
+### `region` (optional)
+
+The region to deploy lambda to. Defaults to `us-east-1`
 
 ## License
 

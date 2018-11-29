@@ -14,9 +14,7 @@ configuration:
       type: string
     s3_key:
       type: string
-  oneOf:
-    required:
-      - function_name
-    required:
-      - zip
+  required:
+    - function_name
+    - zip_file
   additionalProperties: false
