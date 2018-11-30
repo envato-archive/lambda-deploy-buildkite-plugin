@@ -53,18 +53,18 @@ else
 fi
 
 aws_s3_copy() {
-  ${aws_s3_copy_command[@]}
+  "${aws_s3_copy_command[@]}"
 }
 
 aws_lambda_code_update() {
-  ${deploy_command[@]} | jq '.CodeSha256'
+  "${deploy_command[@]}" | jq '.CodeSha256'
 }
 
 # zip up paths if provided 
 make_zip() {
-  if [[ -e $ZIP_PATH ]] ; then
-    pushd $ZIP_PATH
-    zip -r ${DEPLOY_ZIP_FILE} .
+  if [[ -e "$ZIP_PATH" ]] ; then
+    pushd "$ZIP_PATH"
+    zip -r "${DEPLOY_ZIP_FILE}" .
     popd
   else
     echo "🚨: Path for zip file not found" >&2
@@ -73,7 +73,7 @@ make_zip() {
 }
 
 code_sha256() {
-  shasum -a 256 $DEPLOY_ZIP_FILE | base64
+  shasum -a 256 "${DEPLOY_ZIP_FILE}" | base64
 }
 
 # If deploy zip file exists, don't zip.
@@ -85,7 +85,7 @@ LOCAL_CHECKSUM=$(code_sha256)
 
 RETURNED_CHECKSUM=$(aws_lambda_code_update)
 
-if [[ $RETURNED_CHECKSUM == $LOCAL_CHECKSUM ]] ; then
+if [[ $RETURNED_CHECKSUM == "${LOCAL_CHECKSUM}" ]] ; then
   echo "Successfully uploaded new function code with SHA ${RETURNED_CHECKSUM}"
 else
   echo "🚨:Checksum of local zip file ($LOCAL_CHECKSUM) does not match the returned checksum from AWS (${RETURNED_CHECKSUM})"

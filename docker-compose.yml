@@ -9,3 +9,9 @@ services:
     command: ["--id", "envato/lambda-deploy"]
     volumes:
       - ".:/plugin:ro"
+  shell_check:
+    image: koalaman/shellcheck
+    command: ["--color=always", "hooks/command"]
+    working_dir: /plugin
+    volumes:
+      - ".:/plugin:ro"
