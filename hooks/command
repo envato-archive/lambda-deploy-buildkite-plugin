@@ -2,12 +2,13 @@
 
 set -euo pipefail
 
-deploy_command=("aws" "lambda" "update-function-code")
+deploy_command=("aws" "lambda" "update-function-code" "--publish")
 aws_s3_copy_command=("aws" "s3" "cp" "--acl" "private")
 
 BUILDKITE_PLUGIN_LAMBDA_DEPLOY_FUNCTION_NAME=${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_FUNCTION_NAME:-''}
 BUILDKITE_PLUGIN_LAMBDA_DEPLOY_ZIP_FILE=${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_ZIP_FILE:-''}
 BUILDKITE_PLUGIN_LAMBDA_DEPLOY_PATH=${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_PATH:-''}
+BUILDKITE_PLUGIN_LAMBDA_DEPLOY_REGION=${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_REGION:-us-east-1}
 COPY_TO_S3=false
 
 if [[ "${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_DEBUG:-false}" =~ (true|on|1) ]] ; then
@@ -53,18 +54,18 @@ else
 fi
 
 aws_s3_copy() {
-  ${aws_s3_copy_command[@]}
+  "${aws_s3_copy_command[@]}"
 }
 
 aws_lambda_code_update() {
-  ${deploy_command[@]} | jq '.CodeSha256'
+  "${deploy_command[@]}" | jq '.CodeSha256' | tr -d '"'
 }
 
 # zip up paths if provided 
 make_zip() {
-  if [[ -e $ZIP_PATH ]] ; then
-    pushd $ZIP_PATH
-    zip -r ${DEPLOY_ZIP_FILE} .
+  if [[ -e "$ZIP_PATH" ]] ; then
+    pushd "$ZIP_PATH"
+    zip -r "${DEPLOY_ZIP_FILE}" .
     popd
   else
     echo "🚨: Path for zip file not found" >&2
@@ -73,7 +74,7 @@ make_zip() {
 }
 
 code_sha256() {
-  shasum -a 256 $DEPLOY_ZIP_FILE | base64
+  openssl dgst -sha256 -binary "${DEPLOY_ZIP_FILE}" | base64 | tr -d '"'
 }
 
 # If deploy zip file exists, don't zip.
@@ -85,7 +86,7 @@ LOCAL_CHECKSUM=$(code_sha256)
 
 RETURNED_CHECKSUM=$(aws_lambda_code_update)
 
-if [[ $RETURNED_CHECKSUM == $LOCAL_CHECKSUM ]] ; then
+if [[ "$RETURNED_CHECKSUM" == "${LOCAL_CHECKSUM}" ]] ; then
   echo "Successfully uploaded new function code with SHA ${RETURNED_CHECKSUM}"
 else
   echo "🚨:Checksum of local zip file ($LOCAL_CHECKSUM) does not match the returned checksum from AWS (${RETURNED_CHECKSUM})"
