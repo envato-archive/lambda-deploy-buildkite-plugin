@@ -5,7 +5,7 @@ load '/usr/local/lib/bats/load.bash'
 # Uncomment to enable stub debug output:
 #export AWS_STUB_DEBUG=/dev/tty
 #export ZIP_STUB_DEBUG=/dev/tty
-#export SHASUM_STUB_DEBUG=/dev/tty
+#export OPENSSL_STUB_DEBUG=/dev/tty
 #export BASE64_STUB_DEBUG=/dev/tty
 #export JQ_STUB_DEBUG=/dev/tty
 
@@ -34,8 +34,8 @@ teardown() {
 @test "Command runs without errors" {
   stub zip \
     "-r /plugin/fake/path/myfunc-2323.zip * : echo 'ok %d %s%s\n'"
-  stub shasum \
-    "-a 256 /plugin/fake/path/myfunc-2323.zip : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
+  stub openssl \
+    "dgst -sha256 -binary /plugin/fake/path/myfunc-2323.zip : echo 'binarydata'"
   stub base64 \
     ": echo 'TWpJeU1qSXlNakl5TWpJSwo='"
   stub aws \
@@ -51,7 +51,7 @@ teardown() {
 
   unstub zip
   unstub aws
-  unstub shasum
+  unstub openssl 
   unstub base64
   unstub jq
 }
@@ -60,8 +60,8 @@ teardown() {
   unset BUILDKITE_PLUGIN_LAMBDA_DEPLOY_S3_BUCKET
   unset BUILDKITE_PLUGIN_LAMBDA_DEPLOY_S3_KEY
 
-  stub shasum \
-    "-a 256 /plugin/fake/path/myfunc-2323.zip : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
+  stub openssl \
+    "dgst -sha256 -binary /plugin/fake/path/myfunc-2323.zip : echo 'binarydata'"
   stub base64 \
     ": echo 'TWpJeU1qSXlNakl5TWpJSwo='"  
   stub aws \
@@ -75,7 +75,7 @@ teardown() {
   assert_output --partial "Successfully uploaded new function code with SHA TWpJeU1qSXlNakl5TWpJSwo="
 
   unstub aws
-  unstub shasum
+  unstub openssl
   unstub base64
   unstub jq
 }
@@ -85,8 +85,8 @@ teardown() {
   unset BUILDKITE_PLUGIN_LAMBDA_DEPLOY_S3_KEY
   unset BUILDKITE_PLUGIN_LAMBDA_DEPLOY_PATH
 
-  stub shasum \
-    "-a 256 /plugin/myfunc-2323.zip : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
+  stub openssl \
+    "dgst -sha256 -binary /plugin/myfunc-2323.zip : echo 'binarydata'"
   stub base64 \
     ": echo 'TWpJeU1qSXlNakl5TWpJSwo='"  
   stub aws \
@@ -101,7 +101,7 @@ teardown() {
   assert_output --partial "Successfully uploaded new function code with SHA TWpJeU1qSXlNakl5TWpJSwo="
 
   unstub aws
-  unstub shasum
+  unstub openssl
   unstub base64
   unstub jq
 }
@@ -109,8 +109,8 @@ teardown() {
 @test "Command runs with error when checksum returned from AWS is not the same" {
   stub zip \
     "-r /plugin/fake/path/myfunc-2323.zip * : echo 'ok %d %s%s\n'"
-  stub shasum \
-    "-a 256 /plugin/fake/path/myfunc-2323.zip : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
+  stub openssl \
+    "dgst -sha256 -binary /plugin/fake/path/myfunc-2323.zip : echo 'binarydata'"
   stub base64 \
     ": echo 'TWpJeU1qSXlNakl5TWpJSwo='"
   stub aws \
@@ -126,7 +126,7 @@ teardown() {
 
   unstub zip
   unstub aws
-  unstub shasum
+  unstub openssl 
   unstub base64
   unstub jq
 }
