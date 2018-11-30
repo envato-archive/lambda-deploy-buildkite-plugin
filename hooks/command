@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-deploy_command=("aws" "lambda" "update-function-code")
+deploy_command=("aws" "lambda" "update-function-code" "--publish")
 aws_s3_copy_command=("aws" "s3" "cp" "--acl" "private")
 
 BUILDKITE_PLUGIN_LAMBDA_DEPLOY_FUNCTION_NAME=${BUILDKITE_PLUGIN_LAMBDA_DEPLOY_FUNCTION_NAME:-''}
