@@ -1,6 +1,6 @@
 name: Lambda Deployer
 description: Deploy Lambda Code
-author: https://github.com/envato
+author: https://github.com/peakon
 requirements: []
 configuration:
   properties:

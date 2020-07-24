@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run shellcheck
+      run: docker-compose run --rm shellcheck hooks/**
+    - name: Run tests
+      run: docker-compose run --rm tests
+    - name: Run lint
+      run: docker-compose run --rm lint

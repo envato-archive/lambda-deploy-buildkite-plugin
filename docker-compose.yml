@@ -6,7 +6,7 @@ services:
       - ".:/plugin:rw"
   lint:
     image: "buildkite/plugin-linter"
-    command: ["--id", "envato/lambda-deploy"]
+    command: ["--id", "peakon/lambda-deploy"]
     volumes:
       - ".:/plugin:ro"
   shell_check:

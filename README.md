@@ -1,5 +1,7 @@
 # Lambda Deploy Buildkite Plugin
 
+![CI](https://github.com/peakon/lambda-deploy-buildkite-plugin/workflows/CI/badge.svg?branch=master)
+
 A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying AWS Lambda function code.
 
 ## Deploying Lambda Function Code
@@ -8,7 +10,7 @@ A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying 
 steps:
   - name: deploy
     plugins:
-      -  envato/lambda-deploy#v1.1.1:
+      -  peakon/lambda-deploy#v1.1.1:
           function_name: myfunction
           zip_file: deploy-version.zip
           path: path/to/deploy/code
