@@ -1,4 +1,4 @@
-# Lambda Deploy Buildkite Plugin
+# Lambda Deploy GitHub Actions
 
 A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying AWS Lambda function code.
 
