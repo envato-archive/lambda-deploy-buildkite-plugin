@@ -1,6 +1,7 @@
-# Lambda Deploy GitHub Actions
+# Lambda Deploy Buildkite Plugin
 
 [![tests](https://github.com/envato/lambda-deploy-buildkite-plugin/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/envato/lambda-deploy-buildkite-plugin/actions/workflows/tests.yml)
+A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying AWS Lambda function code.
 
 ## Deploying Lambda Function Code
 
@@ -14,6 +15,7 @@ steps:
           path: path/to/deploy/code
           s3_bucket: deploybucket
           s3_key: deploy/key/name
+          region: ap-southeast-2
 ```
 
 ## Configuration

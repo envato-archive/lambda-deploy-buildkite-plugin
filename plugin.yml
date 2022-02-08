@@ -14,6 +14,8 @@ configuration:
       type: string
     s3_key:
       type: string
+    region:
+      type: string
   required:
     - function_name
     - zip_file
