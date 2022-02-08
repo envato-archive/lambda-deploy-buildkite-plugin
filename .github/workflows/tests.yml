@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: lint
-        run: lint --id envato/stop-the-line
+        run: lint --id envato/lambda-deploy
   plugin-shellcheck:
     name: Shellcheck
     runs-on: ubuntu-latest
