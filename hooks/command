@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+set -x
+
 deploy_command=("aws" "lambda" "update-function-code" "--publish")
 aws_s3_copy_command=("aws" "s3" "cp" "--acl" "private")
 
