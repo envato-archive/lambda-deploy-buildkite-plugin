@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-set -x
-
 deploy_command=("aws" "lambda" "update-function-code" "--publish")
 aws_s3_copy_command=("aws" "s3" "cp" "--acl" "private")
 
@@ -63,7 +61,7 @@ aws_lambda_code_update() {
   "${deploy_command[@]}" | jq '.CodeSha256' | tr -d '"'
 }
 
-# zip up paths if provided 
+# zip up paths if provided
 make_zip() {
   if [[ -e "$ZIP_PATH" ]] ; then
     pushd "$ZIP_PATH"
