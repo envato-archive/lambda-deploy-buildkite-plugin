@@ -14,7 +14,6 @@ steps:
           path: path/to/deploy/code
           s3_bucket: deploybucket
           s3_key: deploy/key/name
-          region: ap-southeast-2
 ```
 
 ## Configuration
