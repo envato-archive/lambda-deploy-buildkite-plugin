@@ -1,5 +1,6 @@
 # Lambda Deploy Buildkite Plugin
 
+[![tests](https://github.com/envato/lambda-deploy-buildkite-plugin/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/envato/lambda-deploy-buildkite-plugin/actions/workflows/tests.yml)
 A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying AWS Lambda function code.
 
 ## Deploying Lambda Function Code

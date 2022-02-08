@@ -61,7 +61,7 @@ aws_lambda_code_update() {
   "${deploy_command[@]}" | jq '.CodeSha256' | tr -d '"'
 }
 
-# zip up paths if provided 
+# zip up paths if provided
 make_zip() {
   if [[ -e "$ZIP_PATH" ]] ; then
     pushd "$ZIP_PATH"
